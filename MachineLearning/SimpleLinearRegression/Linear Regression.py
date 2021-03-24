@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plot
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 import pandas as pd
 
 
 def Training():
-    dataset = pd.read_csv('Datasets/LinearRegression.csv')
-    x_Data = np.array(dataset[['x']])
-    y_Data = np.array(dataset[['y']])
+    dataset = pd.read_csv('LinearRegression.csv')
+    x_Data = dataset.drop(columns='y').values
+    y_Data = dataset['y']
     yMean = np.mean(y_Data)
     xMean = np.mean(x_Data)
 
@@ -26,8 +26,10 @@ def Training():
 
 
 def Model_Working(x, y, Line):
-    plot.scatter(y, Line)
-    plot.plot(x, Line)
+    plot.scatter(x ,y)
+    plot.scatter(x , Line)
+    plot.plot(x,y)
+    plot.plot(x , Line)
     plot.xlabel('x    ------- > ')
     plot.ylabel('y --------> ')
     plot.title('X vs Y')
@@ -43,3 +45,10 @@ def Performace_Analysis(yMean, Y, y_predicted):
         deno += (yMean - Y[point]) ** 2
     Accuracy = neu / deno
     return Accuracy
+
+yMean , slope , line = Training()
+data = pd.read_csv('LinearRegression.csv')
+xTest =  data.drop(columns= 'y').values
+yTest = data['y']
+Model_Working(xTest , yTest , line)
+print(r2_score(yTest , line))
